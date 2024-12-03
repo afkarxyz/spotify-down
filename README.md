@@ -12,10 +12,7 @@ from spotifydown import download_track
 
 song_url = "https://open.spotify.com/track/YOUR_TRACK_ID"
 
-# Set download = False to print the download URL only. Use download = True to download the track.
-download = True
+# Set download = 0 to print the download URL only. Use download = 1 to download the track.
+download = 0
 result = download_track(song_url, download=download)
-
-if not download:
-    print(result['download_url'])
 ```
