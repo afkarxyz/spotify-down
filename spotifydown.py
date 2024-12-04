@@ -1,11 +1,13 @@
 import requests
 from pathlib import Path
+import os
 from mutagen.id3 import ID3, APIC, TIT2, TPE1, TALB, TYER
 from urllib.request import urlretrieve
 
 class SpotifyDown:
     def __init__(self):
         self.base_url = "https://spotify-down.com"
+        self.script_dir = os.path.dirname(os.path.abspath(__file__))
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
             "Accept": "application/json, text/plain, */*",
@@ -49,7 +51,8 @@ class SpotifyDown:
 
             if download:
                 filename = self._sanitize_filename(f"{formatted['title']} - {formatted['artists']}")
-                filename = Path(f"{filename}.mp3")
+                filepath = os.path.join(self.script_dir, f"{filename}.mp3")
+                filename = Path(filepath)
                 urlretrieve(download_data["link"], filename)
                 
                 audio = ID3(filename)
@@ -66,7 +69,7 @@ class SpotifyDown:
                 audio.save()
                 
                 formatted["download_path"] = str(filename)
-                print("Download completed successfully!")
+                print(f"Download completed successfully! File saved at: {filepath}")
             else:
                 print("\n[ Track Information ]")
                 for key, value in formatted.items():
